@@ -20,7 +20,7 @@
     "management-system",
     "inventory"
   ],
-  "author": "Your Name",
+  "author": "Vatsal Kathiriya",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.0",
