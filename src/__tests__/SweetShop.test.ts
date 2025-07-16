@@ -245,7 +245,7 @@ describe('SweetShop Service', () => {
       const inventoryValue = sweetShop.getInventoryValue();
 
       // Assert
-      expect(inventoryValue).toBe(2050); // (20*50) + (15*30) + (50*10)
+      expect(inventoryValue).toBe(1950); // (20*50) + (15*30) + (50*10) = 1000 + 450 + 500 = 1950
     });
 
     it('should get sweets that are out of stock', () => {

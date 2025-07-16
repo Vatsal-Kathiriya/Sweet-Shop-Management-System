@@ -100,6 +100,10 @@ describe('SweetShopApp Integration Tests', () => {
         sweetShop.purchaseSweet(1002, sweet.quantity);
         const outOfStockAfter = sweetShop.getOutOfStockSweets();
         expect(outOfStockAfter.length).toBe(outOfStockBefore.length + 1);
+        
+        // Test low stock functionality
+        const lowStockAfter = sweetShop.getLowStockSweets(5);
+        expect(lowStockAfter.length).toBeGreaterThanOrEqual(lowStockBefore.length);
       }
     });
 
