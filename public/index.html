@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Shop Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-candy-cane"></i> Sweet Shop Management System 🍬</h1>
+            <p>Manage your sweet inventory with ease</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalSweets">0</h3>
+                    <p>Total Sweets</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalInventory">0</h3>
+                    <p>Total Inventory</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalValue">₹0</h3>
+                    <p>Total Value</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="lowStock">0</h3>
+                    <p>Low Stock Items</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <div class="action-buttons">
+                <button id="addSweetBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Sweet
+                </button>
+                <button id="refreshBtn" class="btn btn-secondary">
+                    <i class="fas fa-sync"></i> Refresh
+                </button>
+            </div>
+
+            <div class="search-section">
+                <div class="search-controls">
+                    <div class="search-group">
+                        <label for="searchType">Search by:</label>
+                        <select id="searchType">
+                            <option value="name">Name</option>
+                            <option value="category">Category</option>
+                            <option value="price">Price Range</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <input type="text" id="searchInput" placeholder="Enter search term...">
+                        <input type="number" id="minPrice" placeholder="Min Price" style="display: none;">
+                        <input type="number" id="maxPrice" placeholder="Max Price" style="display: none;">
+                    </div>
+                    <button id="searchBtn" class="btn btn-search">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button id="clearSearchBtn" class="btn btn-clear">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="inventory-section">
+            <h2>Inventory</h2>
+            <div class="table-container">
+                <table id="sweetTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sweetTableBody">
+                        <!-- Sweet rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Sweet Modal -->
+    <div id="addSweetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Sweet</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addSweetForm">
+                    <div class="form-group">
+                        <label for="sweetId">ID:</label>
+                        <input type="number" id="sweetId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sweetName">Name:</label>
+                        <input type="text" id="sweetName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sweetCategory">Category:</label>
+                        <select id="sweetCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Nut-Based">Nut-Based</option>
+                            <option value="Milk-Based">Milk-Based</option>
+                            <option value="Vegetable-Based">Vegetable-Based</option>
+                            <option value="Fruit-Based">Fruit-Based</option>
+                            <option value="Chocolate">Chocolate</option>
+                            <option value="Candy">Candy</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sweetPrice">Price (₹):</label>
+                        <input type="number" id="sweetPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sweetQuantity">Quantity:</label>
+                        <input type="number" id="sweetQuantity" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Add Sweet</button>
+                        <button type="button" class="btn btn-secondary" id="cancelAddBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Purchase Sweet</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="purchaseForm">
+                    <div class="form-group">
+                        <label for="purchaseQuantity">Quantity to Purchase:</label>
+                        <input type="number" id="purchaseQuantity" min="1" required>
+                        <small id="availableStock"></small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Purchase</button>
+                        <button type="button" class="btn btn-secondary" id="cancelPurchaseBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restock Modal -->
+    <div id="restockModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Restock Sweet</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="restockForm">
+                    <div class="form-group">
+                        <label for="restockQuantity">Quantity to Add:</label>
+                        <input type="number" id="restockQuantity" min="1" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Restock</button>
+                        <button type="button" class="btn btn-secondary" id="cancelRestockBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
